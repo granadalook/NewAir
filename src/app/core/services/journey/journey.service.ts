@@ -22,8 +22,7 @@ export class JourneyService {
             flight.arrivalStation === arrival
         );
         if (flights.length === 0) {
-          const tres = this.getWithThreeConection(departure, arrival);
-          observer.next(tres);
+          observer.next(this.getWithThreeConection(departure, arrival));
         } else {
           const transpor: ITransport = {
             flightCarrier: flights[0].flightCarrier,
@@ -49,11 +48,13 @@ export class JourneyService {
     });
   }
 
-  getWithThreeConection(departure: string, arrival: string): IJourney {
+  getWithThreeConection(
+    departure: string,
+    arrival: string
+  ): IJourney | undefined {
     const findDeparture = this.flights.filter(
       (res) => res.departureStation === departure
     );
-
     const findArrival = this.flights.filter(
       (res) => res.arrivalStation === arrival
     );
@@ -70,6 +71,7 @@ export class JourneyService {
         connections.push(...flights);
       }
     }
+
     if (connections.length === 0) {
       for (let i = 0; i < findDeparture.length; i++) {
         for (let j = 0; j < findArrival.length; j++) {
@@ -82,69 +84,70 @@ export class JourneyService {
         }
       }
     }
-
-    const transporA: ITransport = {
-      flightCarrier: findDeparture.find(
-        (res) => res.arrivalStation === connections[0].departureStation
-      )?.flightCarrier,
-      flightNumber: findDeparture.find(
-        (res) => res.arrivalStation === connections[0].departureStation
-      )?.flightNumber,
-    };
-    const transporB: ITransport = {
-      flightCarrier: connections[0].flightCarrier,
-      flightNumber: connections[0].flightNumber,
-    };
-    const transporC: ITransport = {
-      flightCarrier: findArrival.find(
-        (res) => res.departureStation === connections[0].arrivalStation
-      )?.flightCarrier,
-      flightNumber: findArrival.find(
-        (res) => res.departureStation === connections[0].arrivalStation
-      )?.flightNumber,
-    };
-    const flight: Array<IFlight> = [
-      {
-        destination: findDeparture.find(
+    if (connections.length > 0) {
+      const transporA: ITransport = {
+        flightCarrier: findDeparture.find(
           (res) => res.arrivalStation === connections[0].departureStation
-        )?.departureStation,
-        origin: findDeparture.find(
+        )?.flightCarrier,
+        flightNumber: findDeparture.find(
           (res) => res.arrivalStation === connections[0].departureStation
-        )?.arrivalStation,
-        price: findDeparture.find(
-          (res) => res.arrivalStation === connections[0].departureStation
-        )?.price,
-        transport: transporA,
-      },
-      {
-        destination: connections[0].departureStation,
-        origin: connections[0].arrivalStation,
-        price: connections[0].price,
-        transport: transporB,
-      },
-
-      {
-        destination: findArrival.find(
+        )?.flightNumber,
+      };
+      const transporB: ITransport = {
+        flightCarrier: connections[0].flightCarrier,
+        flightNumber: connections[0].flightNumber,
+      };
+      const transporC: ITransport = {
+        flightCarrier: findArrival.find(
           (res) => res.departureStation === connections[0].arrivalStation
-        )?.departureStation,
-        origin: findArrival.find(
+        )?.flightCarrier,
+        flightNumber: findArrival.find(
           (res) => res.departureStation === connections[0].arrivalStation
-        )?.arrivalStation,
-        price: findArrival.find(
-          (res) => res.departureStation === connections[0].arrivalStation
-        )?.price,
-        transport: transporC,
-      },
-    ];
-    const journey: IJourney = {
-      origin: departure,
-      destination: arrival,
-      price: flight.reduce(
-        (accumulator, current) => accumulator + (current.price || 0),
-        0
-      ),
-      flights: flight,
-    };
-    return journey;
+        )?.flightNumber,
+      };
+      const flight: Array<IFlight> = [
+        {
+          destination: findDeparture.find(
+            (res) => res.arrivalStation === connections[0].departureStation
+          )?.departureStation,
+          origin: findDeparture.find(
+            (res) => res.arrivalStation === connections[0].departureStation
+          )?.arrivalStation,
+          price: findDeparture.find(
+            (res) => res.arrivalStation === connections[0].departureStation
+          )?.price,
+          transport: transporA,
+        },
+        {
+          destination: connections[0].departureStation,
+          origin: connections[0].arrivalStation,
+          price: connections[0].price,
+          transport: transporB,
+        },
+        {
+          destination: findArrival.find(
+            (res) => res.departureStation === connections[0].arrivalStation
+          )?.departureStation,
+          origin: findArrival.find(
+            (res) => res.departureStation === connections[0].arrivalStation
+          )?.arrivalStation,
+          price: findArrival.find(
+            (res) => res.departureStation === connections[0].arrivalStation
+          )?.price,
+          transport: transporC,
+        },
+      ];
+      const journey: IJourney = {
+        origin: departure,
+        destination: arrival,
+        price: flight.reduce(
+          (accumulator, current) => accumulator + (current.price || 0),
+          0
+        ),
+        flights: flight.filter((res) => res.origin != undefined),
+      };
+      return journey;
+    }
+    return undefined;
   }
 }
