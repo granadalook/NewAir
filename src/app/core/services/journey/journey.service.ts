@@ -24,26 +24,27 @@ export class JourneyService {
         if (flights.length === 0) {
           const tres = this.getWithThreeConection(departure, arrival);
           observer.next(tres);
-        }
-        const transpor: ITransport = {
-          flightCarrier: flights[0].flightCarrier,
-          flightNumber: flights[0].flightNumber,
-        };
-        const flight: Array<IFlight> = [
-          {
-            destination: departure,
-            origin: arrival,
+        } else {
+          const transpor: ITransport = {
+            flightCarrier: flights[0].flightCarrier,
+            flightNumber: flights[0].flightNumber,
+          };
+          const flight: Array<IFlight> = [
+            {
+              destination: departure,
+              origin: arrival,
+              price: flights[0].price,
+              transport: transpor,
+            },
+          ];
+          const journey: IJourney = {
+            origin: departure,
+            destination: arrival,
             price: flights[0].price,
-            transport: transpor,
-          },
-        ];
-        const journey: IJourney = {
-          origin: departure,
-          destination: arrival,
-          price: flights[0].price,
-          flights: flight,
-        };
-        observer.next(journey);
+            flights: flight,
+          };
+          observer.next(journey);
+        }
       });
     });
   }
@@ -52,18 +53,33 @@ export class JourneyService {
     const findDeparture = this.flights.filter(
       (res) => res.departureStation === departure
     );
+
     const findArrival = this.flights.filter(
       (res) => res.arrivalStation === arrival
     );
+
     const connections: Array<IFlightsResponse> = [];
+
     for (let i = 0; i < findDeparture.length; i++) {
       for (let j = 0; j < findArrival.length; j++) {
         const flights = this.flights.filter(
           (flight) =>
             flight.departureStation === findDeparture[i].arrivalStation &&
-            flight.arrivalStation === findArrival[j].departureStation
+            flight.arrivalStation === findArrival[j].arrivalStation
         );
         connections.push(...flights);
+      }
+    }
+    if (connections.length === 0) {
+      for (let i = 0; i < findDeparture.length; i++) {
+        for (let j = 0; j < findArrival.length; j++) {
+          const flights = this.flights.filter(
+            (flight) =>
+              flight.departureStation === findDeparture[i].arrivalStation &&
+              flight.arrivalStation === findArrival[j].departureStation
+          );
+          connections.push(...flights);
+        }
       }
     }
 
