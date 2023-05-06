@@ -1,7 +1,7 @@
-import { Iflight } from './flight.model';
+import { IFlight } from './flight.model';
 
-export interface Ijourney {
-  flights: Iflight[];
+export interface IJourney {
+  flights: IFlight[];
   origin: string;
   destination: string;
   price: number;

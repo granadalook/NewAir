@@ -1,4 +1,4 @@
-export interface Itransport {
+export interface ITransport {
   flightCarrier: string;
   flightNumber: string;
 }

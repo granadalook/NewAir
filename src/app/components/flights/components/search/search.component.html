@@ -1,4 +1,4 @@
-<form [formGroup]="formSearh" (ngSubmit)="search(formSearh.value)">
+<form [formGroup]="formSearh" (ngSubmit)="getJourney(formSearh.value)">
   <div class="divider d-flex align-items-center my-4">
     <p class="text-center fw-bold mx-3 mb-0 fs-5">Crear nueva entidad</p>
   </div>
@@ -36,7 +36,7 @@
     class="text-center text-lg-start mt-4 pt-2 d-flex justify-content-center"
   >
     <button
-      (click)="search(formSearh.value)"
+      (click)="getJourney(formSearh.value)"
       [disabled]="formSearh.invalid"
       type="button"
       class="btn btn-primary btn-lg"

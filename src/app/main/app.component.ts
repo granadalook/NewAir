@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Ijourney } from '../models/journey.model';
 
 @Component({
   selector: 'app-root',

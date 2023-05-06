@@ -1,4 +1,4 @@
-export interface IflightsResponse {
+export interface IFlightsResponse {
   departureStation: string;
   arrivalStation: string;
   flightCarrier: FlightCarrier;

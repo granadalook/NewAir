@@ -1,7 +1,7 @@
-import { Itransport } from './transport.model';
+import { ITransport } from './transport.model';
 
-export interface Iflight {
-  transport: Itransport;
+export interface IFlight {
+  transport: ITransport;
   origin: string;
   destination: string;
   price: number;
