@@ -1,7 +1,7 @@
 export interface IFlightsResponse {
   departureStation: string;
   arrivalStation: string;
-  flightCarrier: FlightCarrier;
+  flightCarrier: string;
   flightNumber: string;
   price: number;
 }

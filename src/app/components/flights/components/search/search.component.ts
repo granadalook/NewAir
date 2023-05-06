@@ -31,7 +31,6 @@ export class SearchComponent {
   ngOnInit(): void {
     this.getDeparture();
     this.changesDepartureSubscription();
-    // this.getJourney();
   }
 
   changesDepartureSubscription(): void {
