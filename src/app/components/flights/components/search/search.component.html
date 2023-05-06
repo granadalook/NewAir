@@ -1,1 +1,48 @@
+<form [formGroup]="formSearh" (ngSubmit)="search(formSearh.value)">
+  <div class="divider d-flex align-items-center my-4">
+    <p class="text-center fw-bold mx-3 mb-0 fs-5">Crear nueva entidad</p>
+  </div>
 
+  <div class="form-outline mb-4">
+    <select
+      class="form-select icono"
+      aria-label="Default select example"
+      formControlName="departure"
+    >
+      <option selected value="">Departing from</option>
+      <option *ngFor="let departure of this.departures" value="{{ departure }}">
+        {{ departure }}
+      </option>
+    </select>
+    <label class="form-label" for="form3Example3">Departing from</label>
+  </div>
+  <div class="form-outline mb-4">
+    <select
+      class="form-select icono"
+      aria-label="Default select example"
+      formControlName="arrival"
+      placeholder="departamento"
+    >
+      <option selected value="">Arriving at</option>
+      <option *ngFor="let arrival of this.arrivals" value="{{ arrival }}">
+        {{ arrival }}
+      </option>
+      >
+    </select>
+    <label class="form-label" for="form3Example3">Arriving at</label>
+  </div>
+
+  <div
+    class="text-center text-lg-start mt-4 pt-2 d-flex justify-content-center"
+  >
+    <button
+      (click)="search(formSearh.value)"
+      [disabled]="formSearh.invalid"
+      type="button"
+      class="btn btn-primary btn-lg"
+      style="padding-left: 2.5rem; padding-right: 2.5rem"
+    >
+      Crear nueva entidad
+    </button>
+  </div>
+</form>

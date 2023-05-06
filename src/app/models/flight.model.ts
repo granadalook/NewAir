@@ -6,3 +6,5 @@ export interface Iflight {
   destination: string;
   price: number;
 }
+
+
