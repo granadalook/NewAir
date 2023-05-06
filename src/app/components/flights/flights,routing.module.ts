@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SearchComponent } from './components/search/search.component';
+
+import { ContainerComponent } from './components/container/container.component';
 
 const routes: Routes = [
   {
     path: '',
-    title: 'Search',
-    component: SearchComponent,
+    title: 'NewAir',
+    component: ContainerComponent,
   },
 ];
 
