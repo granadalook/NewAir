@@ -8,4 +8,5 @@ import { IJourney } from 'src/app/models/journey.model';
 })
 export class FlightsComponent {
   @Input() journeys?: Array<IJourney>;
+
 }

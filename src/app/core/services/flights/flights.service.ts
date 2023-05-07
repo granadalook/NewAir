@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environments';
 import { IFlightsResponse } from 'src/app/models/response.model';
 import { map, Observable } from 'rxjs';
 import { UtilsService } from '../utils/utils.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -31,5 +32,4 @@ export class FlightsService {
         )
       );
   }
-  
 }

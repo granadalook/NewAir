@@ -1,56 +1,43 @@
 <section class="container-searh">
   <form [formGroup]="formSearh" (ngSubmit)="getJourney(formSearh.value)">
     <div class="divider d-flex align-items-center my-4">
-      <p class="text-center fw-bold mx-3 mb-0 fs-5">Crear nueva entidad</p>
+      <p class="text-center fw-bold mx-3 mb-0 fs-5">Search flights</p>
     </div>
 
     <div class="container-searh-inputs-container">
-      <div class="form-outline mb-4 input">
-        <label class="form-label" for="form3Example3">Departing from</label>
-        <select
-          class="form-select icono"
-          aria-label="Default select example"
-          formControlName="departure"
-        >
-          <option selected value="">Departing from</option>
-          <option
-            *ngFor="let departure of this.departures"
-            value="{{ departure }}"
-          >
-            {{ departure }}
-          </option>
-        </select>
+      <div class="form-outline input">
+        <label class="input-lavel" for="form3Example3">Origin</label>
+        <input
+          class="input-text"
+          type="text"
+          formControlName="origin"
+          maxlength="3"
+          oninput="this.value = this.value.toUpperCase()"
+        />
       </div>
-      <div class="form-outline mb-4 input">
-        <label class="form-label" for="form3Example3">Arriving at</label>
-        <select
-          class="form-select icono"
-          aria-label="Default select example"
-          formControlName="arrival"
-          placeholder="departamento"
-        >
-          <option selected value="">Arriving at</option>
-          <option *ngFor="let arrival of this.arrivals" value="{{ arrival }}">
-            {{ arrival }}
-          </option>
-          >
-        </select>
+      <div class="form-outline input">
+        <label class="input-lavel" for="form3Example3">Destination</label>
+
+        <input
+          class="input-text"
+          type="text"
+          formControlName="destination"
+          maxlength="3"
+          oninput="this.value = this.value.toUpperCase()"
+        />
       </div>
     </div>
-    <div
-      class="text-center text-lg-start mt-4 pt-2 d-flex justify-content-center"
-    >
+    <div class="container-input-botton">
       <button
         (click)="getJourney(formSearh.value)"
         [disabled]="formSearh.invalid"
         type="button"
-        class="btn btn-primary btn-lg"
+        class="button-search-input"
         style="padding-left: 2.5rem; padding-right: 2.5rem"
       >
-        Crear nueva entidad
+        Search for flights
       </button>
     </div>
   </form>
 </section>
-
-<app-flights [journeys]="this.journeys"></app-flights>
+<app-flights [journeys]="journeys"></app-flights>

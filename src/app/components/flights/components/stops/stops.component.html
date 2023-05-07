@@ -1,5 +1,53 @@
-<ng-container *ngFor="let flight of this.flights">
-  <h1>origen {{ this.flight.origin }}</h1>
-  <h1>destino {{ this.flight.destination }}</h1>
-  <h1>precio {{ this.flight.price }}</h1>
-</ng-container>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Flights details</h1>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngFor="let flight of flights">
+          <section class="description">
+            <div class="plane-route">
+              <h1>{{ flight.origin }}</h1>
+              <img
+                class="image-flight"
+                src="../../../../../assets/icons/avión.png"
+                alt="/"
+              />
+              <h1>{{ flight.destination }}</h1>
+            </div>
+
+            <div>
+              <h5>Operated by NewAir</h5>
+              <div class="number-flight">
+                <div class="flight-Carrier">
+                  <img
+                    class="image-number-flight"
+                    src="../../../../../assets/icons/avióna.png"
+                    alt="/"
+                  />
+                  <h6>{{ flight.transport.flightCarrier }}</h6>
+                </div>
+                <h6>NA{{ flight.transport.flightNumber }}</h6>
+              </div>
+            </div>
+          </section>
+          <hr />
+          <hr />
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="boton-modal-details" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

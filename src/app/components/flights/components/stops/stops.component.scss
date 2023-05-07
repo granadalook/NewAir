@@ -1,0 +1,35 @@
+.description {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.number-flight {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.image-flight {
+  rotate: 90deg;
+}
+.image-number-flight {
+  width: 30px;
+  height: 30px;
+}
+.plane-route {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.flight-Carrier {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.boton-modal-details {
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: 600;
+}

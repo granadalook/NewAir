@@ -1,7 +1,41 @@
 <ng-container *ngFor="let journey of journeys">
-  <section>
-    <h1>{{ journey?.price }}</h1>
-    <h1>{{ journey?.destination }}</h1>
-    <h1>{{ journey?.origin }}</h1>
-    <app-stops [flights]="journey?.flights"></app-stops></section
-></ng-container>
+  <section class="conatiner-journey">
+    <div class="plane-icons">
+      <img
+        class="icons"
+        src="../../../../../assets/icons/despegue.png"
+        alt="despegue"
+      />
+      <h3 class="descriptions">{{ journey?.origin }}</h3>
+    </div>
+    <div class="details-flights">
+      <img
+        class="icons"
+        src="../../../../../assets/icons/información.png"
+        alt="aterrizaje"
+      />
+      <button
+        type="button"
+        class="button-details-flights"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Flight details
+      </button>
+    </div>
+
+    <div class="plane-icons">
+      <img
+        class="icons"
+        src="../../../../../assets/icons/aterrizaje.png"
+        alt="aterrizaje"
+      />
+      <h3 class="descriptions">{{ journey?.destination }}</h3>
+    </div>
+
+    <h3 class="descriptions">
+      {{ journey?.price | currency : "CAD" : "symbol" : "5.0-3" }}
+    </h3>
+  </section>
+  <app-stops [flights]="journey?.flights"></app-stops>
+</ng-container>
