@@ -41,3 +41,7 @@
   </form>
 </section>
 <app-flights [journeys]="journeys"></app-flights>
+
+<div *ngIf="journeys.length === 0">
+  <h1 class="no-flights-found">No flights found</h1>
+</div>

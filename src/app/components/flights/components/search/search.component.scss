@@ -47,6 +47,12 @@
   font-size: 20px;
   font-weight: 600;
 }
+
+.no-flights-found {
+  margin-top: 70px;
+  text-align: center;
+}
+
 @media (max-width: 1005px) {
   .container-searh-inputs-container {
     flex-direction: column;
