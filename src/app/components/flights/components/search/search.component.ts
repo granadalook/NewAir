@@ -19,7 +19,6 @@ export class SearchComponent {
   journeys!: Array<IJourney>;
   departures!: Array<string>;
   arrivals!: Array<string>;
-  equal: boolean = false;
 
   constructor(
     private formBuilder: UntypedFormBuilder,

@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IJourney } from 'src/app/models/journey.model';
 import { of } from 'rxjs';
 
-fdescribe('FlightCardComponent', () => {
+describe('FlightCardComponent', () => {
   let component: FlightCardComponent;
   let fixture: ComponentFixture<FlightCardComponent>;
   let currencyService: CurrencyService;
