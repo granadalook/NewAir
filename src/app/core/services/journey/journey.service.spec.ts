@@ -15,6 +15,9 @@ describe('JourneyService', () => {
     });
     service = TestBed.inject(JourneyService);
   });
+  afterEach(() => {
+    localStorage.clear();
+  });
 
   it('should be created', () => {
     expect(service).toBeTruthy();

@@ -6,6 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IJourney } from 'src/app/models/journey.model';
 import { of } from 'rxjs';
+import { environment } from 'src/environments/environments';
 
 describe('FlightCardComponent', () => {
   let component: FlightCardComponent;
@@ -57,7 +58,7 @@ describe('FlightCardComponent', () => {
 
     expect(currencyService.convert).toHaveBeenCalledWith(
       to,
-      component.from,
+      environment.DEFAULT_CURRENCY_CODE,
       journey.price
     );
     expect(component.formatePrice).toEqual(expected);

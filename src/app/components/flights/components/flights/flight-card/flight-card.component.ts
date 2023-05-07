@@ -7,6 +7,7 @@ import {
 import { ICurrency } from 'src/app/models/currency.model';
 import { IJourney } from 'src/app/models/journey.model';
 import { CurrencyService } from '../../../../../core/services/currency/currency.service';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'app-flight-card',
@@ -14,7 +15,6 @@ import { CurrencyService } from '../../../../../core/services/currency/currency.
   styleUrls: ['./flight-card.component.scss'],
 })
 export class FlightCardComponent {
-  from: string = 'USD';
   formatePrice!: number;
   currencies!: Array<ICurrency>;
   @Input() journey!: IJourney;
@@ -32,7 +32,7 @@ export class FlightCardComponent {
   }
   convert(journey: IJourney, to: string) {
     this.currencyService
-      .convert(to, this.from, journey.price)
+      .convert(to, environment.DEFAULT_CURRENCY_CODE, journey.price)
       .subscribe((data) => {
         this.formatePrice = data.result;
       });

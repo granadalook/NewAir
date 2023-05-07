@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Subscription, tap, timer } from 'rxjs';
-import { IFlightsResponse } from 'src/app/models/response.model';
-const FLIGHTS = 'flights';
+
 @Injectable({
   providedIn: 'root',
 })
 export class LocalstorageService {
-  private clearSubscription: Subscription;
+  public clearSubscription: Subscription;
 
   constructor() {
     this.clearSubscription = timer(0, 24 * 60 * 60 * 1000)
@@ -18,14 +17,14 @@ export class LocalstorageService {
       .subscribe();
   }
 
-  setFlights(flights: Array<IFlightsResponse>) {
-    window.localStorage.removeItem(FLIGHTS);
-    window.localStorage.setItem(FLIGHTS, JSON.stringify(flights));
+  set(key: string, value: any): void {
+    window.localStorage.removeItem(key);
+    window.localStorage.setItem(key, JSON.stringify(value));
   }
 
-  getFlights(): Array<IFlightsResponse> {
-    const flightsJson = localStorage.getItem(FLIGHTS);
-    return flightsJson ? JSON.parse(flightsJson) : null;
+  get<T>(key: string): T | null {
+    const objetString = localStorage.getItem(key);
+    return objetString ? (JSON.parse(objetString) as T) : null;
   }
 
   clear() {

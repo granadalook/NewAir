@@ -5,8 +5,8 @@ import { IJourney } from 'src/app/models/journey.model';
 import { IFlight } from 'src/app/models/flight.model';
 import { ITransport } from 'src/app/models/transport.model';
 import { IFlightsResponse } from 'src/app/models/response.model';
-import { FlightsModule } from '../../../components/flights/flights.module';
 import { LocalstorageService } from '../local.storage/localstorage.service';
+import { environment } from 'src/environments/environments';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,10 @@ export class JourneyService {
   get(departure: string, arrival: string): Observable<Array<IJourney>> {
     return new Observable<Array<IJourney>>((observer) => {
       this.flightsService.get().subscribe((resp: Array<IFlightsResponse>) => {
-        this.localstorageService.setFlights(resp);
+        this.localstorageService.set(
+          environment.FLIGHTS_LOCAL_STORAGE_ID,
+          resp
+        );
         const flights = resp.filter(
           (flight) =>
             flight.departureStation == departure &&
@@ -92,18 +95,21 @@ export class JourneyService {
     const stopFlights = this.getStopFlights(
       departure,
       arrival,
-      this.localstorageService.getFlights()
+      this.localstorageService.get<Array<IFlightsResponse>>(
+        environment.FLIGHTS_LOCAL_STORAGE_ID
+      ) || []
     );
     let journeys: Array<IJourney> = [];
     if (stopFlights.length > 0) {
       stopFlights.forEach((stop) => {
-        const departureFlight = this.localstorageService
-          .getFlights()
-          .find(
-            (res) =>
-              res.departureStation === departure &&
-              res.arrivalStation === stop?.departureStation
-          );
+        const localStorageflights = this.localstorageService.get<
+          Array<IFlightsResponse>
+        >(environment.FLIGHTS_LOCAL_STORAGE_ID);
+        const departureFlight = (localStorageflights || []).find(
+          (res) =>
+            res.departureStation === departure &&
+            res.arrivalStation === stop?.departureStation
+        );
         const flights = [departureFlight, stop] as Array<IFlightsResponse>;
         journeys.push(this.createJourney(departure, arrival, flights));
       });
