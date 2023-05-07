@@ -36,7 +36,7 @@ export class SearchComponent {
     { validator: this.sameValueValidator }
   );
 
-  ngOnInit(): void {}
+
   sameValueValidator(control: FormGroup) {
     const originValue = control.get('origin')!.value;
     const destinationValue = control.get('destination')!.value;

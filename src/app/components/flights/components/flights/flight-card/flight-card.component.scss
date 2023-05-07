@@ -1,0 +1,71 @@
+.conatiner-journey {
+  height: 120px;
+  border: 1px solid black;
+  background-color: white;
+  box-shadow: 0px 0px 13px 1px rgba(0, 0, 0, 0.55);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 10px 20px;
+}
+.button-details-flights {
+  border: none;
+  background-color: transparent;
+}
+.price-converter {
+  font-weight: 400;
+  margin: 0px;
+  font-size: 25px;
+  font-style: italic;
+}
+.details-flights {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.icons {
+  width: 48px;
+  height: 48px;
+}
+.plane-icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.change-currency {
+  display: flex;
+  justify-content: space-between;
+}
+.icons-change-currency {
+  width: 25px;
+  height: 25px;
+}
+.boton-converter {
+  border: none;
+  background-color: transparent;
+  width: max-content;
+}
+.select-converter-currency {
+  width: 100%;
+  border: none;
+}
+
+@media (max-width: 500px) {
+  .price-converter {
+    font-weight: 600;
+    margin: 0px;
+    font-size: 14px;
+    font-style: italic;
+  }
+  .select-converter-currency {
+    border: none;
+    width: 30px;
+  }
+  .icons {
+    width: 35px;
+    height: 35px;
+  }
+}

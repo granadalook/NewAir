@@ -13,23 +13,5 @@ import { IJourney } from 'src/app/models/journey.model';
   styleUrls: ['./flights.component.scss'],
 })
 export class FlightsComponent {
-  from: string = 'USD';
-
   @Input() journeys?: Array<IJourney>;
-  constructor(
-    private conversionService: ConversionService,
-    private formBuilder: UntypedFormBuilder
-  ) {}
-
-  currencyForm: UntypedFormGroup = this.formBuilder.group({
-    currency: ['', [Validators.required, Validators.minLength(3)]],
-  });
-  convert(journey: IJourney, to: string) {
-    this.conversionService
-      .convertCurrency(to, this.from, journey.price)
-      .subscribe((data) => {
-        this.from = to;
-        journey.price = data.result;
-      });
-  }
 }

@@ -1,0 +1,69 @@
+<section class="conatiner-journey">
+  <div class="plane-icons">
+    <img
+      class="icons"
+      src="../../../../../assets/icons/despegue.png"
+      alt="despegue"
+    />
+    <h3 class="descriptions">{{ journey?.origin }}</h3>
+  </div>
+  <div class="details-flights">
+    <img
+      class="icons"
+      src="../../../../../assets/icons/información.png"
+      alt="aterrizaje"
+    />
+    <div *ngIf="journey.flights.length > 1">
+      {{ journey.flights.length - 1 }} Stop
+    </div>
+    <button
+      type="button"
+      class="button-details-flights"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      Flight details
+    </button>
+  </div>
+
+  <div class="plane-icons">
+    <img
+      class="icons"
+      src="../../../../../assets/icons/aterrizaje.png"
+      alt="aterrizaje"
+    />
+    <h3 class="descriptions">{{ journey!.destination }}</h3>
+  </div>
+  <form
+    class="d-flex flex-column mb-3 text-dark"
+    [formGroup]="currencyForm"
+    role="search"
+  >
+    <div class="change-currency">
+      <select
+        class="select-converter-currency"
+        formControlName="currency"
+        aria-label="Default select example"
+        (change)="convert(journey, currencyForm.value.currency)"
+      >
+        <option value="" disabled selected>Currency</option>
+        <option value="USD">Dollar American</option>
+        <option value="CLP">Chile Peso</option>
+        <option value="CNY">China Yuan Renminbi</option>
+        <option value="GBP">United Kingdom Pound</option>
+        <option value="COP">Colombia Peso</option>
+        <option value="HKD">Hong Kong Dollar</option>
+        <option value="JPY">Japan Yen</option>
+        <option value="KPW">Korea (North) Won</option>
+        <option value="MXN">Mexico Peso</option>
+        <option value="NZD">New Zealand Dollar</option>
+        <option value="PYG">Paraguay Guarani</option>
+        <option value="PEN">Peru Sol</option>
+        <option value="TRY">Turkey Lira</option>
+      </select>
+    </div>
+    <h3 class="price-converter">
+      {{ formatePrice | currency : currencyForm.value.currency }}
+    </h3>
+  </form>
+</section>
