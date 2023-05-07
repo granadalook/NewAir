@@ -14,6 +14,9 @@
         src="../../../../../assets/icons/información.png"
         alt="aterrizaje"
       />
+      <div *ngIf="journey.flights.length > 1">
+        {{ journey.flights.length - 1 }} Stop
+      </div>
       <button
         type="button"
         class="button-details-flights"
@@ -37,33 +40,32 @@
       [formGroup]="currencyForm"
       role="search"
     >
-      <select
-        class="form-select"
-        formControlName="currency"
-        aria-label="Default select example"
-      >
-        <option selected>Select currency</option>
-        <option value="USD">Dollar American</option>
-        <option value="CLP">Chile Peso</option>
-        <option value="CNY">China Yuan Renminbi</option>
-        <option value="GBP">United Kingdom Pound</option>
-        <option value="COP">Colombia Peso</option>
-        <option value="HKD">Hong Kong Dollar</option>
-        <option value="JPY">Japan Yen</option>
-        <option value="KPW">Korea (North) Won</option>
-        <option value="MXN">Mexico Peso</option>
-        <option value="NZD">New Zealand Dollar</option>
-        <option value="PYG">Paraguay Guarani</option>
-        <option value="PEN">Peru Sol</option>
-        <option value="TRY">Turkey Lira</option>
-      </select>
-
-      <h3 class="descriptions">
-        {{ journey?.price | currency : currencyForm.value.currency : "symbol" }}
+      <div class="change-currency">
+        <select
+          class="select-converter-currency"
+          formControlName="currency"
+          aria-label="Default select example"
+          (change)="convert(journey, currencyForm.value.currency)"
+        >
+          <option >Currency</option>
+          <option value="USD">Dollar American</option>
+          <option value="CLP">Chile Peso</option>
+          <option value="CNY">China Yuan Renminbi</option>
+          <option value="GBP">United Kingdom Pound</option>
+          <option value="COP">Colombia Peso</option>
+          <option value="HKD">Hong Kong Dollar</option>
+          <option value="JPY">Japan Yen</option>
+          <option value="KPW">Korea (North) Won</option>
+          <option value="MXN">Mexico Peso</option>
+          <option value="NZD">New Zealand Dollar</option>
+          <option value="PYG">Paraguay Guarani</option>
+          <option value="PEN">Peru Sol</option>
+          <option value="TRY">Turkey Lira</option>
+        </select>
+      </div>
+      <h3 class="price-converter">
+        {{ journey?.price | currency : currencyForm.value.currency }}
       </h3>
-      <button (click)="convert(journey, currencyForm.value.currency)">
-        convertir
-      </button>
     </form>
   </section>
   <app-stops [flights]="journey?.flights"></app-stops>
