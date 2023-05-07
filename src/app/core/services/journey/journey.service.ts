@@ -12,7 +12,6 @@ import { LocalstorageService } from '../local.storage/localstorage.service';
   providedIn: 'root',
 })
 export class JourneyService {
-  //flights!: Array<IFlightsResponse>;
   constructor(
     private flightsService: FlightsService,
     private localstorageService: LocalstorageService
@@ -21,7 +20,6 @@ export class JourneyService {
     return new Observable<Array<IJourney>>((observer) => {
       this.flightsService.get().subscribe((resp: Array<IFlightsResponse>) => {
         this.localstorageService.setFlights(resp);
-        //this.flights = resp;
         const flights = resp.filter(
           (flight) =>
             flight.departureStation == departure &&

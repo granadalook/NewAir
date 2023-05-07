@@ -27,7 +27,7 @@ export class FlightCardComponent {
     currency: ['', [Validators.required, Validators.minLength(3)]],
   });
   ngOnInit(): void {
-    this.formatePrice = this.journey.price;
+    this.formatePrice = this.journey?.price;
     this.currencies = this.currencyService.get();
   }
   convert(journey: IJourney, to: string) {

@@ -5,7 +5,7 @@
       src="../../../../../assets/icons/despegue.png"
       alt="despegue"
     />
-    <h3 class="descriptions">{{ journey!.origin }}</h3>
+    <h3 class="descriptions">{{ journey?.origin }}</h3>
   </div>
   <div class="details-flights">
     <img
@@ -13,7 +13,7 @@
       src="../../../../../assets/icons/información.png"
       alt="aterrizaje"
     />
-    <div *ngIf="journey.flights.length > 1">
+    <div *ngIf="journey?.flights!.length > 1">
       {{ journey.flights.length - 1 }} Stop
     </div>
     <button
@@ -32,7 +32,7 @@
       src="../../../../../assets/icons/aterrizaje.png"
       alt="aterrizaje"
     />
-    <h3 class="descriptions">{{ journey!.destination }}</h3>
+    <h3 class="descriptions">{{ journey?.destination }}</h3>
   </div>
   <form
     class="d-flex flex-column mb-3 text-dark"
