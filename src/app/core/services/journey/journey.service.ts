@@ -5,6 +5,7 @@ import { IJourney } from 'src/app/models/journey.model';
 import { IFlight } from 'src/app/models/flight.model';
 import { ITransport } from 'src/app/models/transport.model';
 import { IFlightsResponse } from 'src/app/models/response.model';
+import { FlightsModule } from '../../../components/flights/flights.module';
 
 @Injectable({
   providedIn: 'root',
@@ -12,142 +13,92 @@ import { IFlightsResponse } from 'src/app/models/response.model';
 export class JourneyService {
   flights!: Array<IFlightsResponse>;
   constructor(private flightsService: FlightsService) {}
-  get(departure: string, arrival: string): Observable<IJourney> {
-    return new Observable<IJourney>((observer) => {
-      this.flightsService.get().subscribe((resp) => {
+  get(departure: string, arrival: string): Observable<Array<IJourney>> {
+    return new Observable<Array<IJourney>>((observer) => {
+      this.flightsService.get().subscribe((resp: Array<IFlightsResponse>) => {
         this.flights = resp;
         const flights = resp.filter(
           (flight) =>
-            flight.departureStation === departure &&
-            flight.arrivalStation === arrival
+            flight.departureStation == departure &&
+            flight.arrivalStation == arrival
         );
         if (flights.length === 0) {
-          observer.next(this.getWithThreeConection(departure, arrival));
+          observer.next(this.getWithConection(departure, arrival));
         } else {
-          const transpor: ITransport = {
-            flightCarrier: flights[0].flightCarrier,
-            flightNumber: flights[0].flightNumber,
-          };
-          const flight: Array<IFlight> = [
-            {
-              destination: departure,
-              origin: arrival,
-              price: flights[0].price,
-              transport: transpor,
-            },
-          ];
-          const journey: IJourney = {
-            origin: departure,
-            destination: arrival,
-            price: flights[0].price,
-            flights: flight,
-          };
-          observer.next(journey);
+          const journeys = flights.map((flight) =>
+            this.createJourney(departure, arrival, [flight])
+          );
+          observer.next(journeys);
         }
       });
     });
   }
 
-  getWithThreeConection(
+  createJourney(
     departure: string,
-    arrival: string
-  ): IJourney | undefined {
-    const findDeparture = this.flights.filter(
+    arrival: string,
+    flightsResponse: Array<IFlightsResponse>
+  ) {
+    const flights = this.mapFlightsResponseToFlight(flightsResponse);
+    const journey: IJourney = {
+      origin: departure,
+      destination: arrival,
+      price: flights.reduce(
+        (accumulator, current) => accumulator + (current.price || 0),
+        0
+      ),
+      flights: flights,
+    };
+    return journey;
+  }
+
+  mapFlightsResponseToFlight(
+    flightResponse: Array<IFlightsResponse>
+  ): Array<IFlight> {
+    return flightResponse.map((flight) => {
+      return {
+        destination: flight.arrivalStation,
+        origin: flight.departureStation,
+        price: flight.price,
+        transport: {
+          flightCarrier: flight.flightCarrier,
+          flightNumber: flight.flightNumber,
+        } as ITransport,
+      } as IFlight;
+    });
+  }
+  getStopFlights(
+    departure: string,
+    arrival: string,
+    flights: Array<IFlightsResponse>
+  ) {
+    const departureArrivals = flights.filter(
       (res) => res.departureStation === departure
     );
-    const findArrival = this.flights.filter(
-      (res) => res.arrivalStation === arrival
-    );
+    const stops = departureArrivals.map((item) => {
+      return flights.find(
+        (flight) =>
+          flight.departureStation === item.arrivalStation &&
+          flight.arrivalStation === arrival
+      );
+    });
+    return stops.filter((res) => res?.arrivalStation != undefined);
+  }
 
-    const connections: Array<IFlightsResponse> = [];
-
-    for (let i = 0; i < findDeparture.length; i++) {
-      for (let j = 0; j < findArrival.length; j++) {
-        const flights = this.flights.filter(
-          (flight) =>
-            flight.departureStation === findDeparture[i].arrivalStation &&
-            flight.arrivalStation === findArrival[j].arrivalStation
+  getWithConection(departure: string, arrival: string): Array<IJourney> {
+    const stopFlights = this.getStopFlights(departure, arrival, this.flights);
+    let journeys: Array<IJourney> = [];
+    if (stopFlights.length > 0) {
+      stopFlights.forEach((stop) => {
+        const departureFlight = this.flights.find(
+          (res) =>
+            res.departureStation === departure &&
+            res.arrivalStation === stop?.departureStation
         );
-        connections.push(...flights);
-      }
+        const flights = [departureFlight, stop] as Array<IFlightsResponse>;
+        journeys.push(this.createJourney(departure, arrival, flights));
+      });
     }
-
-    if (connections.length === 0) {
-      for (let i = 0; i < findDeparture.length; i++) {
-        for (let j = 0; j < findArrival.length; j++) {
-          const flights = this.flights.filter(
-            (flight) =>
-              flight.departureStation === findDeparture[i].arrivalStation &&
-              flight.arrivalStation === findArrival[j].departureStation
-          );
-          connections.push(...flights);
-        }
-      }
-    }
-    if (connections.length > 0) {
-      const transporA: ITransport = {
-        flightCarrier: findDeparture.find(
-          (res) => res.arrivalStation === connections[0].departureStation
-        )?.flightCarrier,
-        flightNumber: findDeparture.find(
-          (res) => res.arrivalStation === connections[0].departureStation
-        )?.flightNumber,
-      };
-      const transporB: ITransport = {
-        flightCarrier: connections[0].flightCarrier,
-        flightNumber: connections[0].flightNumber,
-      };
-      const transporC: ITransport = {
-        flightCarrier: findArrival.find(
-          (res) => res.departureStation === connections[0].arrivalStation
-        )?.flightCarrier,
-        flightNumber: findArrival.find(
-          (res) => res.departureStation === connections[0].arrivalStation
-        )?.flightNumber,
-      };
-      const flight: Array<IFlight> = [
-        {
-          destination: findDeparture.find(
-            (res) => res.arrivalStation === connections[0].departureStation
-          )?.departureStation,
-          origin: findDeparture.find(
-            (res) => res.arrivalStation === connections[0].departureStation
-          )?.arrivalStation,
-          price: findDeparture.find(
-            (res) => res.arrivalStation === connections[0].departureStation
-          )?.price,
-          transport: transporA,
-        },
-        {
-          destination: connections[0].departureStation,
-          origin: connections[0].arrivalStation,
-          price: connections[0].price,
-          transport: transporB,
-        },
-        {
-          destination: findArrival.find(
-            (res) => res.departureStation === connections[0].arrivalStation
-          )?.departureStation,
-          origin: findArrival.find(
-            (res) => res.departureStation === connections[0].arrivalStation
-          )?.arrivalStation,
-          price: findArrival.find(
-            (res) => res.departureStation === connections[0].arrivalStation
-          )?.price,
-          transport: transporC,
-        },
-      ];
-      const journey: IJourney = {
-        origin: departure,
-        destination: arrival,
-        price: flight.reduce(
-          (accumulator, current) => accumulator + (current.price || 0),
-          0
-        ),
-        flights: flight.filter((res) => res.origin != undefined),
-      };
-      return journey;
-    }
-    return undefined;
+    return journeys;
   }
 }

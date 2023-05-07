@@ -11,4 +11,7 @@ export class UtilsService {
       return items.indexOf(element) === index;
     });
   }
+  removeUndefineds<T>(arrays: Array<T>): Array<T> {
+    return arrays.filter((res) => res != undefined);
+  }
 }

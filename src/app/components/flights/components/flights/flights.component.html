@@ -1,0 +1,7 @@
+<ng-container *ngFor="let journey of journeys">
+  <section>
+    <h1>{{ journey?.price }}</h1>
+    <h1>{{ journey?.destination }}</h1>
+    <h1>{{ journey?.origin }}</h1>
+    <app-stops [flights]="journey?.flights"></app-stops></section
+></ng-container>

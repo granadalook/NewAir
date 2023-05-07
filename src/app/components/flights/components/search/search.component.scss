@@ -1,0 +1,17 @@
+.container-searh {
+  background-color: bisque;
+  width: 700px;
+  height: 275px;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.container-searh-inputs-container {
+  display: flex;
+  justify-content: space-around;
+}
+.input {
+  width: 300px;
+  height: max-content;
+}

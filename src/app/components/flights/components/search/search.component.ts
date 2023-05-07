@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { JourneyService } from 'src/app/core/services/journey/journey.service';
 import { IDataForm } from 'src/app/models/dataForm.model';
+import { IJourney } from 'src/app/models/journey.model';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -15,6 +16,7 @@ import { IDataForm } from 'src/app/models/dataForm.model';
 })
 export class SearchComponent {
   flights!: Array<IFlightsResponse>;
+  journeys!: Array<IJourney>;
   departures!: Array<string>;
   arrivals!: Array<string>;
 
@@ -54,8 +56,8 @@ export class SearchComponent {
     });
   }
   getJourney(data: IDataForm): void {
-    this.journeyService
-      .get(data.departure, data.arrival)
-      .subscribe((res) => console.log('vuelo', res));
+    this.journeyService.get(data.departure, data.arrival).subscribe((resp) => {
+      this.journeys = resp;
+    });
   }
 }
