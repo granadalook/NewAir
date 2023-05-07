@@ -2,34 +2,33 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environments';
 import { IFlightsResponse } from 'src/app/models/response.model';
-import { map, Observable } from 'rxjs';
-import { UtilsService } from '../utils/utils.service';
+import { Observable, tap } from 'rxjs';
+import { LocalstorageService } from '../local.storage/localstorage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FlightsService {
-  constructor(private http: HttpClient, private utilsService: UtilsService) {}
+  constructor(
+    private http: HttpClient,
+    private localStorage: LocalstorageService
+  ) {}
 
   get(): Observable<Array<IFlightsResponse>> {
-    return this.http.get<Array<IFlightsResponse>>(`${environment.URL_BASE}`);
-  }
-
-  getDepartures(): Observable<Array<string>> {
-    return this.get()
-      .pipe(map((res) => res.map((flight) => flight.departureStation)))
-      .pipe(map((res) => this.utilsService.getUniques(res)));
-  }
-  getArrivals(departure: string): Observable<Array<string>> {
-    return this.get()
-      .pipe(map((res) => res.map((flight) => flight.arrivalStation)))
-      .pipe(map((res) => this.utilsService.getUniques(res)))
+    const flights = this.localStorage.get<Array<IFlightsResponse>>(
+      environment.FLIGHTS_LOCAL_STORAGE_ID
+    );
+    if (flights) {
+      return new Observable((observer) => {
+        observer.next(flights);
+      });
+    }
+    return this.http
+      .get<Array<IFlightsResponse>>(`${environment.URL_BASE}`)
       .pipe(
-        map((res) =>
-          res.filter((arrival) => {
-            return arrival != departure;
-          })
-        )
+        tap((res) => {
+          this.localStorage.set(environment.FLIGHTS_LOCAL_STORAGE_ID, res);
+        })
       );
   }
 }

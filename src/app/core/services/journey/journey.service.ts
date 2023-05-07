@@ -5,31 +5,22 @@ import { IJourney } from 'src/app/models/journey.model';
 import { IFlight } from 'src/app/models/flight.model';
 import { ITransport } from 'src/app/models/transport.model';
 import { IFlightsResponse } from 'src/app/models/response.model';
-import { LocalstorageService } from '../local.storage/localstorage.service';
-import { environment } from 'src/environments/environments';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JourneyService {
-  constructor(
-    private flightsService: FlightsService,
-    private localstorageService: LocalstorageService
-  ) {}
+  constructor(private flightsService: FlightsService) {}
   get(departure: string, arrival: string): Observable<Array<IJourney>> {
     return new Observable<Array<IJourney>>((observer) => {
       this.flightsService.get().subscribe((resp: Array<IFlightsResponse>) => {
-        this.localstorageService.set(
-          environment.FLIGHTS_LOCAL_STORAGE_ID,
-          resp
-        );
         const flights = resp.filter(
           (flight) =>
             flight.departureStation == departure &&
             flight.arrivalStation == arrival
         );
         if (flights.length === 0) {
-          observer.next(this.getWithConection(departure, arrival));
+          observer.next(this.getWithConection(departure, arrival, resp));
         } else {
           const journeys = flights.map((flight) =>
             this.createJourney(departure, arrival, [flight])
@@ -91,27 +82,27 @@ export class JourneyService {
     return stops.filter((res) => res?.arrivalStation != undefined);
   }
 
-  getWithConection(departure: string, arrival: string): Array<IJourney> {
-    const stopFlights = this.getStopFlights(
-      departure,
-      arrival,
-      this.localstorageService.get<Array<IFlightsResponse>>(
-        environment.FLIGHTS_LOCAL_STORAGE_ID
-      ) || []
-    );
+  getWithConection(
+    departure: string,
+    arrival: string,
+    flights: Array<IFlightsResponse>
+  ): Array<IJourney> {
+    const stopFlights = this.getStopFlights(departure, arrival, flights);
     let journeys: Array<IJourney> = [];
     if (stopFlights.length > 0) {
       stopFlights.forEach((stop) => {
-        const localStorageflights = this.localstorageService.get<
-          Array<IFlightsResponse>
-        >(environment.FLIGHTS_LOCAL_STORAGE_ID);
-        const departureFlight = (localStorageflights || []).find(
+        const departureFlight = flights.find(
           (res) =>
             res.departureStation === departure &&
             res.arrivalStation === stop?.departureStation
         );
-        const flights = [departureFlight, stop] as Array<IFlightsResponse>;
-        journeys.push(this.createJourney(departure, arrival, flights));
+        const flightsWhitConections = [
+          departureFlight,
+          stop,
+        ] as Array<IFlightsResponse>;
+        journeys.push(
+          this.createJourney(departure, arrival, flightsWhitConections)
+        );
       });
     }
     return journeys;
