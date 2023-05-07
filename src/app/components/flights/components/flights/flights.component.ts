@@ -1,10 +1,4 @@
 import { Component, Input } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
-import { ConversionService } from 'src/app/core/services/conversion/conversion-service.service';
 import { IJourney } from 'src/app/models/journey.model';
 
 @Component({

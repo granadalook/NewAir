@@ -40,8 +40,10 @@
     </div>
   </form>
 </section>
-<app-flights [journeys]="journeys"></app-flights>
 
-<div *ngIf="journeys.length === 0">
-  <h1 class="no-flights-found">No flights found</h1>
-</div>
+<ng-container *ngIf="journeys.length; else noflightsfound">
+  <app-flights [journeys]="journeys"></app-flights>
+</ng-container>
+<ng-template #noflightsfound
+  ><h1 class="no-flights-found">No flights found</h1>
+</ng-template>

@@ -1,4 +1,9 @@
+<hr />
+<div class="flights-header">
+  <h1>flights found</h1>
+</div>
 <ng-container *ngFor="let journey of journeys">
   <app-flight-card [journey]="journey"></app-flight-card>
   <app-stops [flights]="journey?.flights"></app-stops>
 </ng-container>
+<hr />
