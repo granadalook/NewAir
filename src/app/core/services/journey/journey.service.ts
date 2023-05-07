@@ -77,7 +77,6 @@ export class JourneyService {
     arrival: string,
     flights: Array<IFlightsResponse>
   ) {
-    console.log('flights', flights);
     const departureArrivals = flights.filter(
       (res) => res.departureStation === departure
     );

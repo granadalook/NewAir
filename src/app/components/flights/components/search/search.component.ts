@@ -36,7 +36,6 @@ export class SearchComponent {
     { validator: this.sameValueValidator }
   );
 
-
   sameValueValidator(control: FormGroup) {
     const originValue = control.get('origin')!.value;
     const destinationValue = control.get('destination')!.value;
@@ -45,7 +44,6 @@ export class SearchComponent {
 
   getJourney(data: IDataForm): void {
     this.journeyService.get(data.origin, data.destination).subscribe((resp) => {
-      console.log('resp', resp);
       this.journeys = resp;
     });
   }

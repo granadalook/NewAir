@@ -5,7 +5,7 @@
       src="../../../../../assets/icons/despegue.png"
       alt="despegue"
     />
-    <h3 class="descriptions">{{ journey?.origin }}</h3>
+    <h3 class="descriptions">{{ journey!.origin }}</h3>
   </div>
   <div class="details-flights">
     <img
@@ -47,19 +47,9 @@
         (change)="convert(journey, currencyForm.value.currency)"
       >
         <option value="" disabled selected>Currency</option>
-        <option value="USD">Dollar American</option>
-        <option value="CLP">Chile Peso</option>
-        <option value="CNY">China Yuan Renminbi</option>
-        <option value="GBP">United Kingdom Pound</option>
-        <option value="COP">Colombia Peso</option>
-        <option value="HKD">Hong Kong Dollar</option>
-        <option value="JPY">Japan Yen</option>
-        <option value="KPW">Korea (North) Won</option>
-        <option value="MXN">Mexico Peso</option>
-        <option value="NZD">New Zealand Dollar</option>
-        <option value="PYG">Paraguay Guarani</option>
-        <option value="PEN">Peru Sol</option>
-        <option value="TRY">Turkey Lira</option>
+        <option *ngFor="let curency of currencies" [value]="curency.code">
+          {{ curency.name }}
+        </option>
       </select>
     </div>
     <h3 class="price-converter">

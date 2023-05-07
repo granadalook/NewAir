@@ -35,15 +35,15 @@
         class="button-search-input"
         style="padding-left: 2.5rem; padding-right: 2.5rem"
       >
-        Search for flights
+        Search For Flights
       </button>
     </div>
   </form>
 </section>
 
-<ng-container *ngIf="journeys.length; else noflightsfound">
+<ng-container *ngIf="journeys?.length; else noflightsfound">
   <app-flights [journeys]="journeys"></app-flights>
 </ng-container>
 <ng-template #noflightsfound
-  ><h1 class="no-flights-found">No flights found</h1>
+  ><h1 class="no-flights-found">No Flights Found</h1>
 </ng-template>

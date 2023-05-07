@@ -4,8 +4,9 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { ConversionService } from 'src/app/core/services/conversion/conversion-service.service';
+import { ICurrency } from 'src/app/models/currency.model';
 import { IJourney } from 'src/app/models/journey.model';
+import { CurrencyService } from '../../../../../core/services/currency/currency.service';
 
 @Component({
   selector: 'app-flight-card',
@@ -15,21 +16,23 @@ import { IJourney } from 'src/app/models/journey.model';
 export class FlightCardComponent {
   from: string = 'USD';
   formatePrice!: number;
+  currencies!: Array<ICurrency>;
   @Input() journey!: IJourney;
 
   constructor(
-    private conversionService: ConversionService,
-    private formBuilder: UntypedFormBuilder
+    private formBuilder: UntypedFormBuilder,
+    private currencyService: CurrencyService
   ) {}
   currencyForm: UntypedFormGroup = this.formBuilder.group({
     currency: ['', [Validators.required, Validators.minLength(3)]],
   });
   ngOnInit(): void {
     this.formatePrice = this.journey.price;
+    this.currencies = this.currencyService.get();
   }
   convert(journey: IJourney, to: string) {
-    this.conversionService
-      .convertCurrency(to, this.from, journey.price)
+    this.currencyService
+      .convert(to, this.from, journey.price)
       .subscribe((data) => {
         this.formatePrice = data.result;
       });
